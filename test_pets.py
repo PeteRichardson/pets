@@ -19,7 +19,10 @@ class TestCat (unittest.TestCase):
 	def test_age_out_of_bounds(self):
 		""" Ages outside of 0-25 should throw """
 		with self.assertRaises(ValueError):
-			unborncat = Cat("Fetus", 0, "Main Coon")
+			unborncat = Cat("Fetus", -1, "Main Coon")
+
+		with self.assertRaises(ValueError):
+			newborncat = Cat("newborn", 0, "Abyssinian")
 
 		with self.assertRaises(ValueError):
 			oldcat = Cat("Methuselah", 40, "Egyptian Sphinx")
