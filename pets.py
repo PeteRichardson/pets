@@ -34,8 +34,18 @@ class Dog (Pet):
     def sound(self):
        return "Woof"
 
+class Horse (Pet):
+    def __init__(self, name, age, breed):
+        super().__init__(name, "Horse", age, breed)
+    
+    @property
+    def sound(self):
+       return "Neigh"
+
 if __name__ == "__main__":
     bella = Cat("Bella", 3, "American Shorthair")
     bella.speak()
     silly = Dog("Silly", 4, "Australian Shepherd")
     silly.speak()
+    pixie = Horse("Pixie", 6, "Arabian")
+    pixie.speak()

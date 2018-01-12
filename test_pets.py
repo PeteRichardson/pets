@@ -1,6 +1,6 @@
 import unittest
 
-from pets import Pet, Cat, Dog
+from pets import Pet, Cat, Dog, Horse
 
 class TestPet(unittest.TestCase):
 	def test_cant_instantiate_pet(self):
@@ -31,6 +31,14 @@ class TestDog(unittest.TestCase):
 	def test_dogsound(self):
 		""" Dogs should Woof """
 		self.assertEqual(self.sampledog.sound, "Woof")
+
+class TestHorse(unittest.TestCase):
+	def setUp(self):
+		self.samplehorse = Horse("Pixie", 8, "Arabian")
+
+	def test_dogsound(self):
+		""" Horses should Neigh """
+		self.assertEqual(self.samplehorse.sound, "Neigh")
 
 
 if __name__ == "__main__":
