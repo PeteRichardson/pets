@@ -151,7 +151,7 @@ class Pet(object):
     "Panther", "Papa", "Paris", "Parker", "Pasha", "Patch", "Patches",
     "Patricky", "Patsy", "Patty", "Peaches", "Peanut", "Peanuts",
     "Pearl", "Pebbles", "Pedro", "Penny", "Pepe", "Pepper", "Peppy",
-    "Pepsi", "Persy", "Pete", "Peter", "Petey", "Petie", "Phantom",
+    "Pepsi", "Persy", "Persephone", "Pete", "Peter", "Petey", "Petie", "Phantom",
     "Phoebe", "Phoenix", "Picasso", "Pickles", "Pierre", "Piggy",
     "Piglet", "Pink Panther", "Pinky", "Pinto", "Pip-Squeek", "Piper",
     "Pippin", "Pippy", "Pirate", "Pixie", "Plato", "Pluto", "Pockets",
