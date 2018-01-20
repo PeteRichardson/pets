@@ -32,6 +32,10 @@ class Pet(object):
     def __str__(self):
         return json.dumps(self.__dict__)
 
+    def __repr__(self):
+        return json.dumps(self.__dict__)
+
+
     names = [ "Abbey", "Abbie", "Abby", "Abel", "Abigail", "Ace",
     "Adam", "Addie", "Admiral", "Aggie", "Aires", "Aj", "Ajax", "Aldo",
     "Alex", "Alexus", "Alf", "Alfie", "Allie", "Ally", "Amber", "Amie",
