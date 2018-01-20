@@ -4,7 +4,7 @@ from random import choice, randrange
 import json
 
 class Pet(object):
-    species = ["Cat", "Dog", "Horse"]
+    species = None   # Generic Pet has no species
 
     def __init__(self, species, name=None, age=None, breed=None):
         if not name:
@@ -28,6 +28,9 @@ class Pet(object):
 
     def speak(self):
         print("{} the {} says '{}!'".format(self.name, self.species.lower(), self.sound))
+
+    def __str__(self):
+        return json.dumps(self.__dict__)
 
     names = [ "Abbey", "Abbie", "Abby", "Abel", "Abigail", "Ace",
     "Adam", "Addie", "Admiral", "Aggie", "Aires", "Aj", "Ajax", "Aldo",
@@ -211,8 +214,12 @@ class Pet(object):
    
     @classmethod
     def random(cls):
-        species = choice(Pet.species)
-        clas = globals()[species]
+        if cls.__name__ == "Pet":
+            # pick a class from all the subclasses of pet
+            clas = choice(cls.__subclasses__())
+        else:
+            # pick the class the user specified
+            clas = globals()[cls.species]
         return clas()
 
     def json(self):
@@ -235,8 +242,10 @@ class Cat (Pet):
     "Selkirk Rex", "Siamese Cat", "Siberian", "Singapura",
     "Snowshoe", "Somali", "Sphynx", "Tonkinese", "Turkish Angora", "Turkish Van"]
 
+    species = "Cat"
+
     def __init__(self, name=None, age=None, breed=None):
-        super(Cat, self).__init__("Cat", name, age, breed)
+        super(Cat, self).__init__(Cat.species, name, age, breed)
     
     @property
     def sound(self):
@@ -302,16 +311,14 @@ class Dog (Pet):
     "Wirehaired Pointing Griffon", "Xoloitzcuintli", "Yorkipoo",
     "Yorkshire Terrier" ]
 
+    species = "Dog"
 
     def __init__(self, name=None, age=None, breed=None):
-        super(Dog, self).__init__("Dog", name,  age, breed)
+        super(Dog, self).__init__(Dog.species, name,  age, breed)
     
     @property
     def sound(self):
        return "Woof"
-
-    names = [ ]
-
 
 class Horse (Pet):
     breeds = [ "Abaco Barb", "Abstang", "Abtenauer", "Abyssinian", "Adaev",
@@ -377,8 +384,11 @@ class Horse (Pet):
     "Voronezh Coach", "Vyatka", "Viatka", "Waler", "Walkaloosa", "Washu Horse", "Welara Pony", "Welsh Cob ", "Welsh Mountain Pony ", "Welsh Pony", "Welsh Pony of Cob Type", "Weser-Ems Pony", "West African Barb", "West Norwegian", "West Norway",
     "Westland", "Western Sudan Pony", "Westfalen Pony", "Westfalen", "Westphalian", "Wielkopolski", "Wild Horses of the Namib", "Württemberger", "Xilingol", "Yabou", "Yaboo", "Yakut Horse", "Yamud", "Yanqi Horse", "Yemeni Horse", "Yili Horse", "Yonaguni Horse", "Yorkshire Coach Horse", "Yugoslav Mountain Pony", "Yunnan", "Yururi Island horse", "Zangersheide", "Zaniskari Pony",
     "Zeeland", "Zemaituka", "Zemaitukai", "Žemaitukas", "Zemaituka", "Zhumd", "Zhemaichu", "Zhmudk", "Zweibrucker"]
+    
+    species = "Horse"
+
     def __init__(self, name=None, age=None, breed=None):
-        super(Horse, self).__init__("Horse", name, age, breed)
+        super(Horse, self).__init__(Horse.species, name, age, breed)
     
     @property
     def sound(self):
