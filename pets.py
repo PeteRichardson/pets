@@ -6,7 +6,13 @@ import json
 class Pet(object):
     species = None   # Generic Pet has no species
 
+    subclass_names = None
+
     def __init__(self, species, name=None, age=None, breed=None):
+        Pet.subclass_names = Pet.subclass_names or [clas.__name__ for clas in Pet.__subclasses__()]
+        if species not in Pet.subclass_names:
+            raise TypeError("You can't instantiate a Pet directly.  Instantiate one of {}".format(Pet.subclass_names))
+
         if not name:
             name = choice(Pet.names)
         if not breed:

@@ -1,16 +1,22 @@
 import unittest
 
-from pets import Pet, Cat, Dog, Horse
+import pets
+class TestPetsModule(unittest.TestCase):
+	def test_Classes_are_exported(self):
+		self.assertTrue("Pet" in dir(pets))
+		self.assertTrue("Cat" in dir(pets))
+		self.assertTrue("Dog" in dir(pets))
+		self.assertTrue("Horse" in dir(pets))
 
 class TestPet(unittest.TestCase):
 	def test_cant_instantiate_pet(self):
 		""" Pet is abstract and cant be instantiated """
 		with self.assertRaises(TypeError):
-			pet = Pet("Waldo", "Gerbil", 8, "Mongolian Gerbil")
+			pet = pets.Pet("Waldo", "Gerbil", 8, "Mongolian Gerbil")
 
 class TestCat (unittest.TestCase):
 	def setUp(self):
-		self.samplecat = Cat("Bella", 3, "American Shorthair")
+		self.samplecat = pets.Cat("Bella", 3, "American Shorthair")
 
 	def test_catsound(self):
 		""" Cats should Meow """
@@ -19,17 +25,17 @@ class TestCat (unittest.TestCase):
 	def test_age_out_of_bounds(self):
 		""" Ages outside of 0-25 should throw """
 		with self.assertRaises(ValueError):
-			unborncat = Cat("Fetus", -1, "Main Coon")
+			unborncat = pets.Cat("Fetus", -1, "Main Coon")
 
 		with self.assertRaises(ValueError):
-			newborncat = Cat("newborn", 0, "Abyssinian")
+			newborncat = pets.Cat("newborn", 0, "Abyssinian")
 
 		with self.assertRaises(ValueError):
-			oldcat = Cat("Methuselah", 40, "Egyptian Sphinx")
+			oldcat = pets.Cat("Methuselah", 40, "Egyptian Sphinx")
 
 class TestDog(unittest.TestCase):
 	def setUp(self):
-		self.sampledog = Dog("Silly", 4, "Austrailan Shepherd")
+		self.sampledog = pets.Dog("Silly", 4, "Austrailan Shepherd")
 
 	def test_dogsound(self):
 		""" Dogs should Woof """
@@ -37,7 +43,7 @@ class TestDog(unittest.TestCase):
 
 class TestHorse(unittest.TestCase):
 	def setUp(self):
-		self.samplehorse = Horse("Pixie", 8, "Arabian")
+		self.samplehorse = pets.Horse("Pixie", 8, "Arabian")
 
 	def test_dogsound(self):
 		""" Horses should Neigh """
