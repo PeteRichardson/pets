@@ -1,3 +1,4 @@
+""" api.py - Pets Falcon API definition """
 import falcon
 
 import rethinkdb as r
