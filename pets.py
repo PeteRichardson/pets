@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from random import choice, randrange
-from json import dumps
+import json 
+
+class InvalidPetData(ValueError):
+    pass
 
 class Pet(object):
     species = None   # Generic Pet has no species
 
     subclass_names = None
 
-    def __init__(self, species, name=None, age=None, breed=None):
+    def __init__(self, species=None, name=None, age=None, breed=None):
         Pet.subclass_names = Pet.subclass_names or [clas.__name__ for clas in Pet.__subclasses__()]
         if species not in Pet.subclass_names:
             raise TypeError("You can't instantiate a Pet directly.  Instantiate one of {}".format(Pet.subclass_names))
@@ -25,8 +28,8 @@ class Pet(object):
         self.age = age
         self.breed = breed      
 
-        if not 0 < self.age < 25:
-            raise ValueError("Invalid age... {}. Expected 0 < age < 25".format(self.age))
+        if not (0 < self.age < 25):
+            raise ValueError("Invalid age... {}. Expected 0 < age < 25.".format(self.age))
 
     @property
     def sound(self):
@@ -36,14 +39,37 @@ class Pet(object):
         print("{} the {} says '{}!'".format(self.name, self.species.lower(), self.sound))
 
     def __str__(self):
-        return dumps(self.__dict__)
+        return json.dumps(self.__dict__)
 
     def __repr__(self):
-        return dumps(self.__dict__)
+        return json.dumps(self.__dict__)
 
     @property
     def json(self):
-        return dumps(self.__dict__)
+        return json.dumps(self.__dict__)
+
+    @classmethod
+    def  from_json(cls, jsonstr):
+        try:
+            import pdb
+            #pdb.set_trace()
+            data = json.loads(jsonstr)
+            speciesname = data.pop('species') # Figure out the species (i.e. the class)   
+            clas = globals()[speciesname]     # Lookup the class
+            obj= clas(**data)                 # Create an object of that type and fill in data
+            return obj
+        except KeyError as e:
+            raise InvalidPetData("pet needs a species")
+
+    @classmethod
+    def random(cls):
+        if cls.__name__ == "Pet":
+            # pick a class from all the subclasses of pet
+            clas = choice(cls.__subclasses__())
+        else:
+            # pick the class the user specified
+            clas = globals()[cls.species]
+        return clas()
 
 
     names = [ "Abbey", "Abbie", "Abby", "Abel", "Abigail", "Ace",
@@ -225,16 +251,6 @@ class Pet(object):
     "Yellow", "Yin", "Yoda", "Yogi-Bear", "Yogi", "Yukon", "Zack",
     "Zeke", "Zena", "Zeus", "Ziggy", "Zippy", "Zoe", "Zoey", "Zoie",
     "Zorro"]
-   
-    @classmethod
-    def random(cls):
-        if cls.__name__ == "Pet":
-            # pick a class from all the subclasses of pet
-            clas = choice(cls.__subclasses__())
-        else:
-            # pick the class the user specified
-            clas = globals()[cls.species]
-        return clas()
 
 class Cat (Pet):
     breeds = [ "Abyssinian", "American Bobtail",
@@ -252,7 +268,7 @@ class Cat (Pet):
     species = "Cat"
 
     def __init__(self, name=None, age=None, breed=None):
-        super(Cat, self).__init__(Cat.species, name, age, breed)
+        super(Cat, self).__init__(Cat.species, name=name, age=age, breed=breed)
     
     @property
     def sound(self):
@@ -321,7 +337,7 @@ class Dog (Pet):
     species = "Dog"
 
     def __init__(self, name=None, age=None, breed=None):
-        super(Dog, self).__init__(Dog.species, name,  age, breed)
+        super(Dog, self).__init__(Dog.species, name=name, age=age, breed=breed)
     
     @property
     def sound(self):
@@ -395,7 +411,7 @@ class Horse (Pet):
     species = "Horse"
 
     def __init__(self, name=None, age=None, breed=None):
-        super(Horse, self).__init__(Horse.species, name, age, breed)
+        super(Horse, self).__init__(Horse.species, name=name, age=age, breed=breed)
     
     @property
     def sound(self):
