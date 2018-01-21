@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  # rethinkdb instance with the standard db connection port: 28015
+  # and the admin web ui available on port 9080
+  db:
+    hostname: db
+    image: rethinkdb
+    ports:
+      - "${RETHINK_ADMIN_PORT}:8080"
+      - "28015:28015"
+
+  # gunicorn web server on port ${APIPORT}
+  # looking for myapp.app in the current directory
+  web:
+    build: .
+    command: gunicorn -w ${NUM_WORKERS} ${APP} --log-level=${LOG_LEVEL} -b 0.0.0.0:${API_PORT} --reload
+    volumes:
+      - .:/code
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    depends_on:
+      - db

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from random import choice, randrange
-import json
+from json import dumps
 
 class Pet(object):
     species = None   # Generic Pet has no species
@@ -36,10 +36,14 @@ class Pet(object):
         print("{} the {} says '{}!'".format(self.name, self.species.lower(), self.sound))
 
     def __str__(self):
-        return json.dumps(self.__dict__)
+        return dumps(self.__dict__)
 
     def __repr__(self):
-        return json.dumps(self.__dict__)
+        return dumps(self.__dict__)
+
+    @property
+    def json(self):
+        return dumps(self.__dict__)
 
 
     names = [ "Abbey", "Abbie", "Abby", "Abel", "Abigail", "Ace",
@@ -231,13 +235,6 @@ class Pet(object):
             # pick the class the user specified
             clas = globals()[cls.species]
         return clas()
-
-    def json(self):
-        return json.dumps(self.__dict__)
-
-    def __str__(self):
-        return self.json()
-
 
 class Cat (Pet):
     breeds = [ "Abyssinian", "American Bobtail",

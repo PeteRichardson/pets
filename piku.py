@@ -2,18 +2,12 @@
 import falcon
 
 import rethinkdb as r
-import json
-from pets import Cat
+from pets import Pet
 
 class PetResource:
+
 	def on_get(self, req, resp):
-
-		bella = Cat("Bella", 3, "American Shorthair")
-
-		pet_record = json.dumps(bella.__dict__)
-
-		resp.media = pet_record
-
+		resp.body = Pet.random().json
 
 api = falcon.API()
-api.add_route('/pet', PetResource())
+api.add_route('/pet/random', PetResource())
