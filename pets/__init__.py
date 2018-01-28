@@ -1,3 +1,14 @@
+""" pets module - classes to represent types of pets (e.g. pets.Horse, pets.Cat, etc)
+
+    Each pet has a name, species, age and breed, as well as the ability to speak()
+
+        >>> import pets
+        >>> kitty = pets.Cat(name="Bella", age=3, breed="American Shorthair")
+        >>> kitty.speak()
+        Bella the cat says 'Meow!'
+        >>> kitty.json
+        '{"age": 3, "breed": "American Shorthair", "name": "Bella", "species": "Cat"}'
+"""
 # -*- coding: utf-8 -*-
 
 def _pet_classnames():
