@@ -1,29 +1,37 @@
 # -*- coding: utf-8 -*-
 
-import importlib
-import sys
+def _pet_classnames():
+    """ Finds Pet subclasses in the current folder.
 
-def _list_pet_classes():
+        Assumes each class name is capitalized and each class file is lowercase
+        (e.g. horse.py defines class Horse) """
     from os.path import dirname, basename, isfile
     import glob
     pyfiles = glob.glob(dirname(__file__)+"/*.py")
-    classnames = [ basename(f)[:-3].capitalize() for f in pyfiles if isfile(f) and not f.endswith('__init__.py')]
+    # Build a list of all classnames (capitalized).  Includes "Pet"
+    classnames = [ basename(f)[:-3].capitalize() for f in pyfiles if isfile(f) 
+                                             and not f.endswith('__init__.py')]
+    # Must import Pet first, so remove it and add it to the front of the list
     classnames.remove("Pet")
     return ["Pet"] + classnames   # make sure Pet class is imported first
 
-def _import_one(classname):
-    submodule = importlib.import_module("pets.{}".format(classname.lower()))
-    clas = getattr(submodule, classname)
-    module = sys.modules[__name__]
-    setattr(module, classname, clas)
-    module.__dict__.pop(classname.lower(),None)
-    #setattr(sys.modules[__name__], classname, clas)
-    #sys.modules[__name__].__dict__.pop(classname.lower(),None)
-    return clas
+def _import(classnames):
+    """ import the specified Pet subclasses"""
+    import importlib
+    import sys
+    for classname in classnames:
+        module = sys.modules[__name__]
+        
+        # Load the class and make it visible as an attribute of pets
+        submodule = importlib.import_module("pets."+classname.lower())
+        setattr(module, classname, getattr(submodule, classname))
 
-for classname in _list_pet_classes():
-    _import_one(classname)
+        # Specify which classes to export when importing *
+        module.__all__.append(classname)
+        
+        # remove unneeded pets submodule from namespace (e.g. pets.horse)
+        module.__dict__.pop(classname.lower(),None)
+        
 
-del sys
-del importlib
-del classname
+__all__ = []    # classnames are added to this inside _import()
+_import( _pet_classnames() )
