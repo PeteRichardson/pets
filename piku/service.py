@@ -1,7 +1,7 @@
 """ api.py - Pets Falcon API definition """
 import falcon
 import json
-from pets import Pet
+from pets import Pet, Cat
 
 
 def raise_error(status_code, title, failed_action, reason):
@@ -20,12 +20,11 @@ class RandomPetResource(object):
 
 class PetResource(object):
     def on_get(self, req, resp, pet_id):
-        print "petid = {}".format(pet_id)
-        if int(pet_id) == 47:
-            resp.body = Pet.random().json
+        if int(pet_id) == 1:
+            resp.body = Cat("Bella", 3, "American Shorthair").json
         else:
             raise_error(status_code=404,
-                        title="Can't find Pet with id {}".format(id),
+                        title="Can't find Pet with id {}".format(pet_id),
                         failed_action="GET",
                         reason="No such id in DB")
 
@@ -41,8 +40,11 @@ class PetResource(object):
                         failed_action="Create",
                         reason="Invalid data provided")
 
+def create():
+    api = falcon.API()
+    api.add_route('/pet/random',   RandomPetResource())
+    api.add_route('/pet/',         PetResource())
+    api.add_route('/pet/{pet_id}', PetResource())
+    return api
 
-api = falcon.API()
-api.add_route('/pet/random',   RandomPetResource())
-api.add_route('/pet/',         PetResource())
-api.add_route('/pet/{pet_id}', PetResource())
+api = create()
