@@ -7,7 +7,7 @@ services:
     hostname: db
     image: rethinkdb
     ports:
-      - "${RETHINK_ADMIN_PORT}:8080"
+      - "${RETHINK_ADMIN_PORT}:${RETHINK_ADMIN_PORT}"
       - "28015:28015"
 
   # gunicorn web server on port ${APIPORT}
