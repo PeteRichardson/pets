@@ -2,6 +2,7 @@
 import falcon
 import json
 from pets import Pet, Cat
+from apikeystore import APIKeystore
 
 
 def raise_error(status_code, title, failed_action, reason):
@@ -17,7 +18,17 @@ class RandomPetResource(object):
     def on_get(self, req, resp):
         resp.body = Pet.random().json
 
+def check_api_key(req, resp, resource, params):
+    authkey = None
+    if req.headers.has_key('AUTHORIZATION'):
+        authkey = req.headers['AUTHORIZATION']
+    if not APIKeystore.is_valid(authkey):
+        raise_error(status_code=401,
+                    title="Unauthorized",
+                    failed_action=req.method,
+                    reason="Did not supply a valid API key")
 
+@falcon.before(check_api_key)
 class PetResource(object):
     def on_get(self, req, resp, pet_id):
         if int(pet_id) == 1:
