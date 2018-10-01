@@ -1,8 +1,8 @@
 import unittest
 import piku
-import json
 from pets import Pet
-from falcon import Request, Response, testing
+from falcon.testing import TestClient
+
 
 class TestAPIKey (unittest.TestCase):
     def setUp(self):
@@ -19,8 +19,7 @@ class TestAPIKey (unittest.TestCase):
 
     def test_keyfornouser(self):
         with self.assertRaises(KeyError):
-            key = self.keystore.key("bogus")
-
+            dummy_key = self.keystore.key("bogus")
 
 
 class TestService(unittest.TestCase):
@@ -29,8 +28,9 @@ class TestService(unittest.TestCase):
         'good': '4AFC5337-3BCF-4E1D-847E-5F0FA14A7204',
         'bad': 'this is not a valid api key'
     }
+
     def setUp(self):
-        self.client = testing.TestClient(piku.service.create())
+        self.client = TestClient(piku.service.create())
 
     def test_pet1(self):
         """ pet #1 should always be Bella         """
@@ -42,12 +42,11 @@ class TestService(unittest.TestCase):
         """ random pet should be well formed """
         result = self.client.simulate_get('/pet/random')
         randompet = Pet(**result.json)
-        for key in ['name','species','breed','age']:
+        for key in ['name', 'species', 'breed', 'age']:
             # make sure the key exists
             self.assertTrue(hasattr(randompet, key))
             # make sure value isn't empty
-            self.assertGreater(len(str(getattr(randompet, key))),0)
-
+            self.assertGreater(len(str(getattr(randompet, key))), 0)
 
     def get_with_auth(self, apikey):
         params = {
@@ -57,7 +56,6 @@ class TestService(unittest.TestCase):
         }
         result = self.client.simulate_get('/pet/1', **params)
         return result
-
 
     def test_good_apikey_works(self):
         """ Test that passing a valid API key works  """
