@@ -69,6 +69,8 @@ class Horse (Pet):
     
     species = "Horse"
 
+    max_age = 30
+
     def __init__(self, name=None, age=None, breed=None):
         super(Horse, self).__init__(Horse.species, name=name, age=age, breed=breed)
     

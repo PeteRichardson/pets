@@ -22,6 +22,8 @@ class Snake (Pet):
     
     species = "Snake"
 
+    max_age = 25
+
     def __init__(self, name=None, age=None, breed=None):
         super(Snake, self).__init__(Snake.species, name=name, age=age, breed=breed)
     

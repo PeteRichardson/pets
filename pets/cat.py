@@ -17,6 +17,8 @@ class Cat (Pet):
 
     species = "Cat"
 
+    max_age = 16
+
     def __init__(self, name=None, age=None, breed=None):
         super(Cat, self).__init__(Cat.species, name=name, age=age, breed=breed)
     

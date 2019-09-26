@@ -22,15 +22,15 @@ class Pet(object):
         if not breed:
             breed = choice(self.breeds)
         if age is None:
-            age = randrange(1,24)
+            age = randrange(1,self.max_age)
 
         self.name = name
         self.species = species
         self.age = age
         self.breed = breed      
 
-        if not (0 < self.age < 25):
-            raise ValueError("Invalid age... {}. Expected 0 < age < 25.".format(self.age))
+        if not (0 < self.age < self.max_age):
+            raise ValueError("Invalid age... {}. Expected 0 < age < {}.".format(self.age, self.max_age))
 
     @property
     def sound(self):

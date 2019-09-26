@@ -1,2 +1,2 @@
 from apikeystore import APIKeystore
-from service import PetResource, create
+from service import PetResource, create, api

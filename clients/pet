@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import pikuclient
+from pets import Pet
 
-bella = pikuclient.Cat.random()
-print bella
+my_pet = Pet.random()
+print my_pet
