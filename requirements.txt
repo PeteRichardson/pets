@@ -1,5 +1,5 @@
 # Public python packages go here.
 falcon==1.2.0
 falcon-multipart==0.2.0
-gunicorn==22.0.0
+gunicorn==23.0.0
 rethinkdb==2.3.0.post6
